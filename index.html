@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alerta Caudal</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+
+  <button id="toggleSidebar" title="Mostrar/ocultar panel">☰</button>
+
+  <div id="sidebar" class="active">
+
+    <div class="sidebar-header">
+      <div class="header-title">🌊 Alerta Caudal</div>
+      <div class="header-sub">Simulador de zonas de inundación · Chile</div>
+    </div>
+
+    <!-- Ubicación jerárquica -->
+    <div class="section">
+      <label class="section-title">📍 Ubicación</label>
+      <select id="regSelect" class="admin-select">
+        <option value="">— Selecciona región —</option>
+      </select>
+      <select id="provSelect" class="admin-select" disabled>
+        <option value="">— Selecciona provincia —</option>
+      </select>
+      <select id="comunaSelect" class="admin-select" disabled>
+        <option value="">— Selecciona comuna —</option>
+      </select>
+    </div>
+
+    <!-- Lista de ríos -->
+    <div class="section" id="riverSection" style="display:none">
+      <label class="section-title">🌊 Ríos en la zona</label>
+      <div id="riverList" class="river-list"></div>
+      <div id="riverEmpty" class="river-empty" style="display:none">
+        No se encontraron ríos en esta zona
+      </div>
+    </div>
+
+    <!-- Nivel de alerta (oculto hasta que haya río seleccionado) -->
+    <div class="section" id="levelSection" style="display:none">
+      <label class="section-title">🚨 Nivel de crecida</label>
+      <div class="level-buttons">
+        <button class="lvl-btn" data-level="bajo">Bajo</button>
+        <button class="lvl-btn active" data-level="medio">Medio</button>
+        <button class="lvl-btn" data-level="alto">Alto</button>
+        <button class="lvl-btn" data-level="critico">Crítico</button>
+      </div>
+      <div class="level-desc">
+        Radio activo: <strong id="bufferDisplay">250 m</strong>
+        <span id="levelLabel" class="level-label-badge level-medio">Medio</span>
+      </div>
+    </div>
+
+    <!-- Ajuste fino -->
+    <div class="section" id="sliderSection" style="display:none">
+      <label class="section-title">📏 Ajuste fino: <span id="sliderVal">250</span> m del cauce</label>
+      <input type="range" id="bufferSlider" min="10" max="1000" value="250" step="10" />
+      <div class="slider-labels">
+        <span>10 m</span>
+        <span>500 m</span>
+        <span>1 km</span>
+      </div>
+    </div>
+
+    <!-- Impacto -->
+    <div class="section" id="impactSection" style="display:none">
+      <label class="section-title">📊 Infraestructura en zona de riesgo</label>
+      <div id="impactList"></div>
+    </div>
+
+    <!-- Estado -->
+    <div id="poiStatus" class="poi-status">Selecciona región, provincia y comuna para comenzar</div>
+
+  </div>
+
+  <div id="map"></div>
+
+  <!-- Leyenda -->
+  <div id="legend" style="display:none">
+    <div class="legend-title">Zonas de riesgo</div>
+    <div class="legend-item"><span class="legend-color" style="background:#ffdd00"></span> Bajo (≤150 m)</div>
+    <div class="legend-item"><span class="legend-color" style="background:#ff8800"></span> Medio (≤350 m)</div>
+    <div class="legend-item"><span class="legend-color" style="background:#dd3300"></span> Alto (≤600 m)</div>
+    <div class="legend-item"><span class="legend-color" style="background:#880000"></span> Crítico (>600 m)</div>
+    <hr />
+    <div class="legend-item">🏥 Hospital / Clínica</div>
+    <div class="legend-item">🏫 Escuela</div>
+    <div class="legend-item">🚒 Bomberos</div>
+    <div class="legend-item">🚔 Carabineros</div>
+    <div class="legend-item">🌉 Puente</div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
